@@ -99,7 +99,7 @@ namespace Playnite.DesktopApp.ViewModels
             public bool Import
             {
                 get; set;
-            }
+            } = true;// set default check box state
 
             public ImportableProgram(Program program, ProgramType type) : base(program)
             {
@@ -409,9 +409,11 @@ namespace Playnite.DesktopApp.ViewModels
                 var addedGames = new List<Game>();
                 foreach (var game in games)
                 {
-                    var added = database.ImportGame(game);
-                    addedGames.Add(added);
-                    database.AssignPcPlatform(added);
+                    if (!database.Games.Any(item => item.InstallDirectory == game.Game.InstallDirectory))// check if the game already added
+                        var added = database.ImportGame(game);
+                        addedGames.Add(added);
+                        database.AssignPcPlatform(added);
+                    }
                 }
 
                 return addedGames;
