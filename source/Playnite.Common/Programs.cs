@@ -68,31 +68,46 @@ namespace Playnite.Common
             return await Task.Run(() =>
             {
                 var execs = new List<Program>();
-                var files = new SafeFileEnumerator(path, "*.exe", SearchOption.AllDirectories);
-
-                foreach (var file in files)
+                var directories = Directory.GetDirectories(path);//get list of name of folders in path
+                foreach (var dir in directories)
                 {
-                    if (cancelToken?.IsCancellationRequested == true)
-                    {
-                        return null;
-                    }
-
-                    if (file.Attributes.HasFlag(FileAttributes.Directory))
-                    {
-                        continue;
-                    }
-
-                    var versionInfo = FileVersionInfo.GetVersionInfo(file.FullName);
-                    var programName = !string.IsNullOrEmpty(versionInfo.ProductName?.Trim()) ? versionInfo.ProductName : new DirectoryInfo(Path.GetDirectoryName(file.FullName)).Name;
-
+                    
                     execs.Add(new Program()
                     {
-                        Path = file.FullName,
-                        Icon = file.FullName,
-                        WorkDir = Path.GetDirectoryName(file.FullName),
-                        Name = programName
+                        Path = "",
+                        Icon = "",
+                        WorkDir = dir,
+                        Name = new DirectoryInfo(dir).Name// get name of the folder
                     });
+
                 }
+
+                //var execs = new List<Program>();
+                //var files = new SafeFileEnumerator(path, "*.exe", SearchOption.AllDirectories);
+
+                //foreach (var file in files)
+                //{
+                //    if (cancelToken?.IsCancellationRequested == true)
+                //    {
+                //        return null;
+                //    }
+
+                //    if (file.Attributes.HasFlag(FileAttributes.Directory))
+                //    {
+                //        continue;
+                //    }
+
+                //    var versionInfo = FileVersionInfo.GetVersionInfo(file.FullName);
+                //    var programName = !string.IsNullOrEmpty(versionInfo.ProductName?.Trim()) ? versionInfo.ProductName : new DirectoryInfo(Path.GetDirectoryName(file.FullName)).Name;
+
+                //    execs.Add(new Program()
+                //    {
+                //        Path = file.FullName,
+                //        Icon = file.FullName,
+                //        WorkDir = Path.GetDirectoryName(file.FullName),
+                //        Name = programName
+                //    });
+                //}
 
                 return execs;
             });
