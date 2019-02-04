@@ -424,7 +424,7 @@ namespace PlayniteUI.ViewModels
             List<InstalledGameMetadata> tempList = new List<InstalledGameMetadata>(games);// clone games list
             foreach (var game in games)
             {
-                if (database.Games.Any(item => item.InstallDirectory == game.Game.InstallDirectory))// check if the game already added
+                if (database.Games.Any(item => new DirectoryInfo(item.InstallDirectory).Name == new DirectoryInfo(game.Game.InstallDirectory).Name))// check if a game with same folder name already added
                 {
                     tempList.Remove(game);// remove from to be added list
                 }
