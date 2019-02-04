@@ -121,7 +121,7 @@ namespace PlayniteUI.ViewModels
             public bool Import
             {
                 get; set;
-            }
+            } = true;// set default check box state
 
             public ImportableProgram()
             {
@@ -421,15 +421,20 @@ namespace PlayniteUI.ViewModels
 
         public static List<Game> AddImportableGamesToDb(List<InstalledGameMetadata> games, GameDatabase database)
         {
+            List<InstalledGameMetadata> tempList = new List<InstalledGameMetadata>(games);// clone games list
             foreach (var game in games)
             {
-                if (game.Icon != null)
+                if (database.Games.Any(item => item.InstallDirectory == game.Game.InstallDirectory))// check if the game already added
+                {
+                    tempList.Remove(game);// remove from to be added list
+                }
+                else if (game.Icon != null)
                 {
                     game.Game.Icon = database.AddFile(game.Icon.Name, game.Icon.Data, game.Game.Id);
                 }
             }
 
-            var insertGames = games.Select(a => a.Game).ToList();
+            var insertGames = tempList.Select(a => a.Game).ToList();
             database.Games.Add(insertGames);
             database.AssignPcPlatform(insertGames);
             return insertGames;
