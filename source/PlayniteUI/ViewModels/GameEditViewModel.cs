@@ -2323,8 +2323,33 @@ namespace PlayniteUI.ViewModels
                     GameMetadata metadata;
                     var tempGame = game.CloneJson();
                     tempGame.CoverImage = string.Empty;
+                    bool flag = true;
+                    if (tempGame.Links.Any(item => item.Name == "Steam" || item.Name == "steam"))
+                    {
+                        string url = "";
+                        foreach (var item in tempGame.Links)
+                        {
+                            if (item.Name == "Steam" || item.Name == "steam")
+                            {
+                                url = item.Url;
+                            }
+                        }
+                        tempGame.GameId = "";
+                        int index = url.IndexOf("/app/");
+                        for (int i = index + 5; i < url.Count(); i++)
+                        {
+                            if (url[i].ToString() != "/")
+                            {
+                                tempGame.GameId += url[i].ToString();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        flag = false;
+                    }
 
-                    if (extensions.LibraryPlugins.TryGetValue(tempGame.PluginId, out var plugin))
+                    if (flag && extensions.LibraryPlugins.TryGetValue(tempGame.PluginId, out var plugin))
                     {
                         var downloader = plugin.Plugin.GetMetadataDownloader();
                         metadata = downloader.GetMetadata(tempGame);
