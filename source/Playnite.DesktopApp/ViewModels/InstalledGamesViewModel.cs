@@ -434,7 +434,8 @@ namespace Playnite.DesktopApp.ViewModels
                 var addedGames = new List<Game>();
                 foreach (var game in games)
                 {
-                    if (!database.Games.Any(item => new DirectoryInfo(item.InstallDirectory).Name == new DirectoryInfo(game.Game.InstallDirectory).Name))// check if a game with same folder name already added
+                    if (!database.Games.Any(item => new DirectoryInfo(item.InstallDirectory).Name == new DirectoryInfo(game.GameInfo.InstallDirectory).Name))// check if a game with same folder name already added
+                    {
                         var added = database.ImportGame(game);
                         addedGames.Add(added);
                         database.AssignPcPlatform(added);
