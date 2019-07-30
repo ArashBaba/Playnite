@@ -2518,8 +2518,7 @@ namespace Playnite.DesktopApp.ViewModels
             {
                 try
                 {
-                    GameMetadata metadata;
-                    var tempGame = game.CloneJson();
+                    var tempGame = game.GetClone();
                     tempGame.CoverImage = string.Empty;
                     bool flag = true;
                     if (tempGame.Links.Any(item => item.Name == "Steam" || item.Name == "steam"))
