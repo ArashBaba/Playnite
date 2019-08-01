@@ -45,8 +45,26 @@ namespace System
             {
                 return str;
             }
+            var ret = str;
 
-            return Regex.Replace(str, @"[™©®]", string.Empty);
+            ret = Regex.Replace(str, @"[™©®]", string.Empty);
+            ret = ret.Replace("www.Downloadha.com", string.Empty);
+            ret = ret.Replace("DARKSiDERS", string.Empty);
+            ret = ret.Replace("Razor1911", string.Empty);
+            ret = ret.Replace("CODEX", string.Empty);
+            ret = ret.Replace("CPY", string.Empty);
+            ret = ret.Replace("PLAZA", string.Empty);
+            ret = ret.Replace("RELOADED", string.Empty);
+            ret = ret.Replace("FitGirl Repack", string.Empty);
+            ret = ret.Replace("CPY", string.Empty);
+            ret = ret.Replace("SKIDROW", string.Empty);
+            ret = ret.Replace("HOODLUM", string.Empty);
+            ret = ret.Replace("DARKZER0", string.Empty);
+            ret = ret.Replace("GOG", string.Empty);
+            ret = ret.Replace("SiMPLEX", string.Empty);
+            ret = ret.Replace("PROPHET", string.Empty);
+
+            return ret;     
         }
 
         public static bool IsNullOrEmpty(this string source)
@@ -54,7 +72,7 @@ namespace System
             return string.IsNullOrEmpty(source);
         }
 
-        public static string NormalizeGameName(string name)
+        public static string NormalizeGameName(this string name)
         {
             if (string.IsNullOrEmpty(name))
             {
@@ -62,9 +80,10 @@ namespace System
             }
 
             var newName = name;
+            newName = RemoveTrademarks(newName);
             newName = newName.Replace("_", " ");
             newName = newName.Replace(".", " ");
-            newName = RemoveTrademarks(newName);
+            newName = newName.Replace("-", " ");
             newName = Regex.Replace(newName, @"\[.*?\]", "");
             newName = Regex.Replace(newName, @"\(.*?\)", "");
             newName = Regex.Replace(newName, @"\s*:\s*", ": ");

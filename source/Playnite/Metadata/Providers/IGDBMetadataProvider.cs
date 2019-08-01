@@ -96,7 +96,7 @@ namespace Playnite.Metadata.Providers
 
         public ICollection<MetadataSearchResult> SearchMetadata(Game game)
         {
-            return client.GetIGDBGames(game.Name.RemoveTrademarks())?.Select(a => new MetadataSearchResult()
+            return client.GetIGDBGames(game.Name.NormalizeGameName())?.Select(a => new MetadataSearchResult()
             {
                 Id = a.id.ToString(),
                 Name = a.name.RemoveTrademarks(),
