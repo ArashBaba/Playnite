@@ -103,7 +103,7 @@ IconIndex=0";
                         Path = "",
                         Icon = "",
                         WorkDir = dir,
-                        Name = new DirectoryInfo(dir).Name// get name of the folder
+                        Name = System.StringExtensions.NormalizeGameName(new DirectoryInfo(dir).Name)// get name of the folder and clean it
                     });
 
                 }
